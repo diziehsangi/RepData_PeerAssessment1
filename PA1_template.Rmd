@@ -9,10 +9,11 @@ output:
 ## Loading and preprocessing the data
 
 The libraries used in this experiment are as follows:
-```{r}
+```{r,  message=FALSE, warning=FALSE}
 library(dplyr)
 library(ggplot2)
 ```
+
 
 We will read in the csv file and convert the date column from character to the `Date` format in R. This
 conversion is needed for the analysis at a later stage.
@@ -37,7 +38,7 @@ hist(totalStepsPerDay$sumPerDay, main="Histogram of Steps Per Day", xlab="Steps 
 
 ```
 
-The mean steps per day is `r mean(totalStepsPerDay$sumPerDay)` and the median is `r median(totalStepsPerDay$sumPerDay)`.
+The mean steps per day is `r sprintf("%.2f", mean(totalStepsPerDay$sumPerDay))` and the median is `r median(totalStepsPerDay$sumPerDay)`.
 
 ## What is the average daily activity pattern?
 
@@ -54,6 +55,7 @@ ggplot(averageStepsPerInterval, aes(interval, meanPerInterval)) +
 
 ```
 
+The interval with the highest number of steps is `r averageStepsPerInterval[which.max(averageStepsPerInterval$meanPerInterval),]$interval`.
 
 ## Imputing missing values
 The total number of NAs in this dataset is `r sum(is.na(activityDataSet))`. For imputation we're going to replace all the NA values with the average number of steps taken per interval over all days:
@@ -82,7 +84,7 @@ par(mfrow=c(1,1))
 
 ```
 
-The results show that by averaging the intervals per all days available we have effectively added a day with +10000 steps(actual value is `r sum(subset(fixedActivityDataSet, date == "2012-10-01")$steps)`) to the dataset and that has resulted in the histogram showing higher frequency for the days over 10000 steps. 
+The results show that by averaging the intervals per all days available we have effectively added a day with +10000 steps(actual value is `r sprintf("%.3f", sum(subset(fixedActivityDataSet, date == "2012-10-01")$steps))`) to the dataset and that has resulted in the histogram showing higher frequency for the days over 10000 steps. 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -107,4 +109,4 @@ ggplot(fixedAverageStepsPerInterval, aes(interval, meanPerInterval)) +
   ggtitle("Weekend vs Weekday Steps Average") + xlab("interval") + ylab("average number of steps")
 ```
 
-The results,as expected, show more variability throughout the day in the number of steps because of the subject probabaly walking around more as opposed to sitting down. Also there is a noticable contrast in the commute time in a weekday where the steps taken increase dramatically.
+The results, as expected, show more variability throughout the day in the number of steps because of the subject probabaly walking around more as opposed to sitting down. Also there is a noticable contrast in the commute time in a weekday where the steps taken increase dramatically.
